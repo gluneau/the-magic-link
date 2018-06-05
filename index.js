@@ -1,5 +1,6 @@
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
 const app = express();
 
 // key for delegator API at https://uploadbeta.com/api/steemit/delegators must be set
@@ -10,6 +11,9 @@ if (!process.env.DELEGATORS_API_KEY) {
 
 // all the frog accounts
 const accounts = ['the-magic-frog', 'der-zauberfrosch', 'grenouille'];
+
+// allow cross origin resource sharing
+app.use(cors());
 
 // gets all delegators for all frog accounts (AND NO OTHERS!)
 app.get('/delegators', (req, res, next) => {
