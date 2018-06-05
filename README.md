@@ -33,7 +33,7 @@ To make this run an API key is needed. It must be set as an env var:
 export DELEGATORS_API_KEY=IdOnThaV4mFkEY
 ```
 
-## More Endpoints
+## In a galaxy far far away...
 
-I am considering to set up an own database to store everything we need, in addition to storing it in the blockchain.
-This API can then be the communication layer between the bots and the websites... something like that.
+...I am considering to set up an own database to store everything we need, in addition to storing it in the blockchain.
+This API can then be the communication layer between the bots/websites and the data... something like that.
