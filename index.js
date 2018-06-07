@@ -15,34 +15,22 @@ const accounts = ['the-magic-frog', 'der-zauberfrosch', 'grenouille'];
 // allow cross origin resource sharing
 app.use(cors());
 
-// gets all delegators for all frog accounts (AND NO OTHERS!)
+// get delegators for one of the frog accounts
 app.get('/delegators', (req, res, next) => {
-  // loop through accounts an create some promises
-  let promises = [];
-  accounts.forEach((account) => {
-    promises.push(new Promise((resolve, reject) => {
-      axios.get('https://uploadbeta.com/api/steemit/delegators/?cached&hash=' + process.env.DELEGATORS_API_KEY + '&id=' + account).then((result) => {
-        resolve(result.data);
-      }).catch((err) => {
-        reject(err);
-      });
-    }));
-  });
+  const account = req.query.account;
 
-  // now get the data
-  let delegators = {};
-  Promise.all(promises).then(values => {
-    values.forEach((value, i) => {
-      delegators[accounts[i]] = value;
-    });
-
-    // send response
-    res.setHeader('Content-Type', 'application/json');
-    res.send(delegators);
-  }).catch((err) => {
-    console.log(err);
+  if (accounts.indexOf(account) === -1) {
     next();
-  });
+  } else {
+    axios.get('https://uploadbeta.com/api/steemit/delegators/?cached&hash=' + process.env.DELEGATORS_API_KEY + '&id=' + account).then((result) => {
+      // send response
+      res.setHeader('Content-Type', 'application/json');
+      res.send(result.data);
+    }).catch((err) => {
+      console.error(err);
+      next();
+    });
+  }
 });
 
 // Hey! Listen! https://www.youtube.com/watch?v=95mmGO3sleE
