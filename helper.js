@@ -45,6 +45,29 @@ module.exports = {
       });
     });
   },
+  getSubmissions(storyPost) {
+    return new Promise((resolve, reject) => {
+      steem.api.getContentReplies(storyPost.author, storyPost.permlink, function(err, comments) {
+        if (err) {
+          reject(err);
+        } else {
+          let submissions = [];
+          comments.forEach(comment => {
+            if (comment.hasOwnProperty('json_metadata') && comment.json_metadata) {
+              let meta = JSON.parse(comment.json_metadata);
+              if (meta.hasOwnProperty('type') && ['append', 'end'].indexOf(meta.type) !== -1) {
+                submissions.push(comment);
+              }
+            }
+          });
+          submissions.sort((a, b) => {
+            return b.net_votes - a.net_votes;
+          });
+          resolve(submissions);
+        }
+      });
+    });
+  },
   getStories(storyPosts) {
     let stories = [];
     storyPosts.forEach(post => {
