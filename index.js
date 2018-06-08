@@ -76,8 +76,6 @@ app.get('/stories', async (req, res, next) => {
   }
 });
 
-
-
 // get all commands from current story post
 app.get('/submissions', async (req, res, next) => {
   const account = req.query.account;
@@ -91,6 +89,21 @@ app.get('/submissions', async (req, res, next) => {
     // send response
     res.setHeader('Content-Type', 'application/json');
     res.send(submissions);
+  }
+});
+
+// get all story posts
+app.get('/storyposts', async (req, res, next) => {
+  const account = req.query.account;
+
+  if (accounts.indexOf(account) === -1) {
+    next();
+  } else {
+    const storyPosts = await helper.getStoryPosts(account);
+
+    // send response
+    res.setHeader('Content-Type', 'application/json');
+    res.send(storyPosts);
   }
 });
 
