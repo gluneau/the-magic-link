@@ -51,7 +51,6 @@ app.get('/contributors', async (req, res, next) => {
   } else {
     const storyPosts = await helper.getStoryPosts(account);
     const stories = helper.getStories(storyPosts);
-    stories.forEach(story => {console.log(story.title);});
     const allCommands = helper.getAllCommands(stories);
     const contributors = helper.getContributors(allCommands);
 
