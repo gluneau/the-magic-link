@@ -1,6 +1,9 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+
+const helper = require('./helper');
+
 const app = express();
 
 // key for delegator API at https://uploadbeta.com/api/steemit/delegators must be set
@@ -23,13 +26,38 @@ app.get('/delegators', (req, res, next) => {
     next();
   } else {
     axios.get('https://uploadbeta.com/api/steemit/delegators/?cached&hash=' + process.env.DELEGATORS_API_KEY + '&id=' + account).then((result) => {
+      let delegators = result.data;
+      // sort by SP
+      delegators.sort((a, b) => {
+        return a.sp < b.sp;
+      });
+
       // send response
       res.setHeader('Content-Type', 'application/json');
-      res.send(result.data);
+      res.send(delegators);
     }).catch((err) => {
       console.error(err);
       next();
     });
+  }
+});
+
+// get all contributors for one of the frog accounts
+app.get('/contributors', async (req, res, next) => {
+  const account = req.query.account;
+
+  if (accounts.indexOf(account) === -1) {
+    next();
+  } else {
+    const storyPosts = await helper.getStoryPosts(account);
+    const stories = helper.getStories(storyPosts);
+    stories.forEach(story => {console.log(story.title);});
+    const allCommands = helper.getAllCommands(stories);
+    const contributors = helper.getContributors(allCommands);
+
+    // send response
+    res.setHeader('Content-Type', 'application/json');
+    res.send(contributors);
   }
 });
 
