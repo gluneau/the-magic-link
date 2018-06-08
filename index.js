@@ -100,6 +100,7 @@ app.get('/storyposts', async (req, res, next) => {
     next();
   } else {
     const storyPosts = await helper.getStoryPosts(account);
+    storyPosts.reverse();
 
     // send response
     res.setHeader('Content-Type', 'application/json');
