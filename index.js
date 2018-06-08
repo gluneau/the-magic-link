@@ -60,6 +60,22 @@ app.get('/contributors', async (req, res, next) => {
   }
 });
 
+// get all stories (the last post of each story)
+app.get('/stories', async (req, res, next) => {
+  const account = req.query.account;
+
+  if (accounts.indexOf(account) === -1) {
+    next();
+  } else {
+    const storyPosts = await helper.getStoryPosts(account);
+    const stories = helper.getStories(storyPosts);
+
+    // send response
+    res.setHeader('Content-Type', 'application/json');
+    res.send(stories);
+  }
+});
+
 // Hey! Listen! https://www.youtube.com/watch?v=95mmGO3sleE
 const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => {
