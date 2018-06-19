@@ -95,16 +95,25 @@ app.get('/submissions', async (req, res, next) => {
 // get all story posts
 app.get('/storyposts', async (req, res, next) => {
   const account = req.query.account;
+  let storyNumber = parseInt(req.query.storyNumber);
 
   if (accounts.indexOf(account) === -1) {
     next();
   } else {
     const allStoryPosts = await helper.getAllStoryPosts(account);
     allStoryPosts.reverse();
+    const stories = helper.getStories(allStoryPosts);
 
-    // send response
-    res.setHeader('Content-Type', 'application/json');
-    res.send(allStoryPosts);
+    if (storyNumber && storyNumber <= stories.length) {
+      const storyPosts = helper.getStoryPosts(allStoryPosts, storyNumber);
+      // send response
+      res.setHeader('Content-Type', 'application/json');
+      res.send(storyPosts);
+    } else {
+      // send response
+      res.setHeader('Content-Type', 'application/json');
+      res.send(allStoryPosts);
+    }
   }
 });
 
