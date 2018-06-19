@@ -13,7 +13,7 @@ if (!process.env.DELEGATORS_API_KEY) {
 }
 
 // all the frog accounts
-const accounts = ['the-magic-frog', 'der-zauberfrosch', 'grenouille'];
+const accounts = ['the-magic-frog', 'der-zauberfrosch', 'grenouille', 'analyzer'];
 
 // allow cross origin resource sharing
 app.use(cors());
