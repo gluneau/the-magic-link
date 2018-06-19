@@ -174,6 +174,30 @@ app.get('/lateststorypost', async (req, res, next) => {
   }
 });
 
+// has latest story ended
+app.get('/hasstoryended', async (req, res, next) => {
+  const account = req.query.account;
+
+  if (accounts.indexOf(account) === -1) {
+    next();
+  } else {
+    const allStoryPosts = await helper.getAllStoryPosts(account);
+
+    if (allStoryPosts.length) {
+      const meta = JSON.parse(allStoryPosts[allStoryPosts.length - 1].json_metadata);
+      if (meta.hasOwnProperty('commands') && meta.commands.length) {
+        // send response
+        res.setHeader('Content-Type', 'application/json');
+        res.send(meta.commands[meta.commands.length - 1].type === 'end');
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  }
+});
+
 // Hey! Listen! https://www.youtube.com/watch?v=95mmGO3sleE
 const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => {
