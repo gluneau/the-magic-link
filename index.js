@@ -155,6 +155,25 @@ app.get('/pot', async (req, res, next) => {
   }
 });
 
+// get latest story post
+app.get('/lateststorypost', async (req, res, next) => {
+  const account = req.query.account;
+
+  if (accounts.indexOf(account) === -1) {
+    next();
+  } else {
+    const allStoryPosts = await helper.getAllStoryPosts(account);
+
+    if (allStoryPosts.length) {
+      // send response
+      res.setHeader('Content-Type', 'application/json');
+      res.send(allStoryPosts[allStoryPosts.length - 1]);
+    } else {
+      next();
+    }
+  }
+});
+
 // Hey! Listen! https://www.youtube.com/watch?v=95mmGO3sleE
 const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => {
