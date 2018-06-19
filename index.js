@@ -49,8 +49,8 @@ app.get('/contributors', async (req, res, next) => {
   if (accounts.indexOf(account) === -1) {
     next();
   } else {
-    const storyPosts = await helper.getStoryPosts(account);
-    const stories = helper.getStories(storyPosts);
+    const allStoryPosts = await helper.getAllStoryPosts(account);
+    const stories = helper.getStories(allStoryPosts);
     const allCommands = helper.getAllCommands(stories);
     const contributors = helper.getContributors(allCommands);
 
@@ -67,8 +67,8 @@ app.get('/stories', async (req, res, next) => {
   if (accounts.indexOf(account) === -1) {
     next();
   } else {
-    const storyPosts = await helper.getStoryPosts(account);
-    const stories = helper.getStories(storyPosts);
+    const allStoryPosts = await helper.getAllStoryPosts(account);
+    const stories = helper.getStories(allStoryPosts);
 
     // send response
     res.setHeader('Content-Type', 'application/json');
@@ -83,8 +83,8 @@ app.get('/submissions', async (req, res, next) => {
   if (accounts.indexOf(account) === -1) {
     next();
   } else {
-    const storyPosts = await helper.getStoryPosts(account);
-    const submissions = await helper.getSubmissions(storyPosts[storyPosts.length - 1]);
+    const allStoryPosts = await helper.getAllStoryPosts(account);
+    const submissions = await helper.getSubmissions(allStoryPosts[allStoryPosts.length - 1]);
 
     // send response
     res.setHeader('Content-Type', 'application/json');
@@ -99,12 +99,50 @@ app.get('/storyposts', async (req, res, next) => {
   if (accounts.indexOf(account) === -1) {
     next();
   } else {
-    const storyPosts = await helper.getStoryPosts(account);
-    storyPosts.reverse();
+    const allStoryPosts = await helper.getAllStoryPosts(account);
+    allStoryPosts.reverse();
 
     // send response
     res.setHeader('Content-Type', 'application/json');
-    res.send(storyPosts);
+    res.send(allStoryPosts);
+  }
+});
+
+// get account data
+app.get('/account', async (req, res, next) => {
+  const account = req.query.account;
+
+  if (accounts.indexOf(account) === -1) {
+    next();
+  } else {
+    const accountData = await helper.getAccount(account);
+
+    // send response
+    res.setHeader('Content-Type', 'application/json');
+    res.send(accountData);
+  }
+});
+
+// get pot size
+app.get('/pot', async (req, res, next) => {
+  const account = req.query.account;
+  let storyNumber = parseInt(req.query.storyNumber);
+
+  if (accounts.indexOf(account) === -1) {
+    next();
+  } else {
+    const allStoryPosts = await helper.getAllStoryPosts(account);
+    const stories = helper.getStories(allStoryPosts);
+
+    // validate storyNumber, fallback to latest
+    storyNumber = storyNumber && storyNumber <= stories.length ? storyNumber : stories.length;
+
+    const storyPosts = helper.getStoryPosts(allStoryPosts, storyNumber);
+    const pot = helper.getPot(storyPosts);
+
+    // send response
+    res.setHeader('Content-Type', 'application/json');
+    res.send(pot);
   }
 });
 

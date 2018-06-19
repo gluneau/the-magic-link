@@ -1,7 +1,24 @@
 const steem = require('steem');
 
 module.exports = {
-  async getStoryPosts(account) {
+  // helper for recursive post fetching
+  getPosts(account, start_author, start_permlink) {
+    return new Promise((resolve, reject) => {
+      steem.api.getDiscussionsByBlog({
+        tag: account,
+        limit: 100,
+        start_author: start_author,
+        start_permlink: start_permlink
+      }, (err, res) => {
+        if (!err) {
+          resolve(res);
+        } else {
+          reject(err);
+        }
+      });
+    });
+  },
+  async getAllStoryPosts(account) {
     let storyPosts = [];
     let posts;
     let lastPost;
@@ -29,20 +46,10 @@ module.exports = {
 
     return storyPosts;
   },
-  getPosts(account, start_author, start_permlink) {
-    return new Promise((resolve, reject) => {
-      steem.api.getDiscussionsByBlog({
-        tag: account,
-        limit: 100,
-        start_author: start_author,
-        start_permlink: start_permlink
-      }, (err, res) => {
-        if (!err) {
-          resolve(res);
-        } else {
-          reject(err);
-        }
-      });
+  getStoryPosts(allStoryPosts, storyNumber) {
+    return allStoryPosts.filter(post => {
+      let meta = JSON.parse(post.json_metadata);
+      return meta.hasOwnProperty('storyNumber') && meta.storyNumber === storyNumber;
     });
   },
   getSubmissions(storyPost) {
@@ -106,5 +113,36 @@ module.exports = {
         return 1;
       return 0;
     });
+  },
+  getAccount(account) {
+    return new Promise((resolve, reject) => {
+      steem.api.getAccounts([account], (err, users) => {
+        if (err || users.length === 0) {
+          reject(err);
+        } else {
+          resolve(users[0]);
+        }
+      });
+    });
+  },
+  getPot(storyPosts) {
+    let pot = 0;
+    for (let i = 0; i < storyPosts.length; i++) {
+      let post = storyPosts[i];
+      if (post.last_payout === '1970-01-01T00:00:00') {
+        pot += parseFloat(post.pending_payout_value.replace(' SBD', '')) * 0.75 / 2;
+      } else {
+        pot += (parseFloat(post.total_payout_value.replace(' SBD', '')) / 2);
+      }
+    }
+
+    pot *= 0.95; // 5 % goes to beneficiaries
+
+    return {
+      total: pot,
+      delegators: pot * 0.2,
+      winner: pot * 0.4,
+      others: pot * 0.4
+    }
   }
 };
