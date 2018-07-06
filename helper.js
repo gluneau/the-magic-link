@@ -96,6 +96,20 @@ module.exports = {
     });
     return allCommands;
   },
+  getCurators(allStoryPosts) {
+    let curators = []
+    allStoryPosts.forEach(post => {
+      let meta = JSON.parse(post.json_metadata);
+      //  Add each curators contributed amounts of every votes.
+    });
+    return curators.sort((a, b) => {
+      if (a.curations > b.curations)
+        return -1;
+      if (a.curations < b.curations)
+        return 1;
+      return 0;
+    });
+  },
   getContributors(allCommands) {
     let contributors = [];
     allCommands.forEach(command => {
