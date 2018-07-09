@@ -102,12 +102,17 @@ module.exports = {
       //  Add each curators contributed amounts of every votes.
       if (post.hasOwnProperty('active_votes') && post.active_votes) {
         post.active_votes.forEach(vote => {
-          let avote = JSON.parse(vote);
+          //let avote = JSON.parse(vote);
+          let avote = vote;
           if (avote.hasOwnProperty('rshares') && avote.rshares) {
-            let curation = avote.rshares * steem_reward_balance / steem_recent_claims;
-            curators.push(avote.voter, avote.curation);
+            let index = curators.findIndex(curator => curator.voter === avote.voter);
+            if (index) {
+              curators[index].curations += avote.rshares;
+            } else {
+              curators.push({curator: avote.voter, curations: avote.rshares});
+            }
           }
-        }
+        });
       }
     });
     return curators.sort((a, b) => {

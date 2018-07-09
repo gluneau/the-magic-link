@@ -14,13 +14,37 @@ The delegators endpoint also needs an API key. It must be set as an env var:
 
 ```
 export DELEGATORS_API_KEY=IdOnThaV4mFkEY
+export PORT=443
 ```
+
+And to run:
+
+```
+sudo su
+node index.js
+```
+
+Testing 
+
+Generating a ca cert if you don't have one.
+
+```
+openssl s_client -showcerts -servername server -connect localhost:443 < /dev/null | sed -n -e '/BEGIN\ CERTIFICATE/,/END\ CERTIFICATE/ p' > cert/cacert.pem
+```
+
+Get the data:
+
+```
+curl --cacert cert/cacert.pem https://api.the-magic-frog.com/curators\?account\=grenouille
+```
+
 
 ## Endpoints:
 
 **https://api.the-magic-frog.com**
 - [`/delegators`](https://github.com/mktcode/the-magic-link/blob/master/index.js#L22): Returns all delegators, order by SP.
 - [`/contributors`](https://github.com/mktcode/the-magic-link/blob/master/index.js#L46): Returns all users who have contributed to a story, together with their total number of contributions, ordered by that number.
+- [`/curators`](): Returns all curators, order by SBD
 - [`/submissions`](https://github.com/mktcode/the-magic-link/blob/master/index.js#L80): Returns all currently voteable submissions, order by votes.
 - [`/stories`](https://github.com/mktcode/the-magic-link/blob/master/index.js#L64): Returns the last post for each story that exists.
 - [`/storyposts`](https://github.com/mktcode/the-magic-link/blob/master/index.js#L96): Returns all posts that belong to a story.
