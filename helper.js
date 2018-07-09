@@ -96,32 +96,29 @@ module.exports = {
     });
     return allCommands;
   },
-  getCurators(allStoryPosts) {
+  getCurators(allStoryPosts, top) {
     let curators = []
     allStoryPosts.forEach(post => {
-      //  Add each curators contributed amounts of every votes.
       if (post.hasOwnProperty('active_votes') && post.active_votes) {
         post.active_votes.forEach(vote => {
-          //let avote = JSON.parse(vote);
-          let avote = vote;
-          if (avote.hasOwnProperty('rshares') && avote.rshares) {
-            let index = curators.findIndex(curator => curator.voter === avote.voter);
-            if (index) {
-              curators[index].curations += avote.rshares;
+          if (vote.hasOwnProperty('rshares') && vote.rshares) {
+            let index = curators.findIndex(curator => curator.voter === vote.voter);
+            if (index !== -1) {
+              curators[index].rshares += eval(vote.rshares);
             } else {
-              curators.push({curator: avote.voter, curations: avote.rshares});
+              curators.push({voter: vote.voter, rshares: eval(vote.rshares)});
             }
           }
         });
       }
     });
     return curators.sort((a, b) => {
-      if (a.curations > b.curations)
+      if (a.rshares > b.rshares)
         return -1;
-      if (a.curations < b.curations)
+      if (a.rshares < b.rshares)
         return 1;
       return 0;
-    });
+    }).slice(0,eval(top));
   },
   getContributors(allCommands) {
     let contributors = [];

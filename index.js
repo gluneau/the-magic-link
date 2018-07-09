@@ -70,12 +70,13 @@ app.get('/contributors', async (req, res, next) => {
 // get all contributors for one of the frog accounts
 app.get('/curators', async (req, res, next) => {
   const account = req.query.account;
+  const top = req.query.top;
 
   if (accounts.indexOf(account) === -1) {
     next();
   } else {
     const allStoryPosts = await helper.getAllStoryPosts(account);
-    const curators = helper.getCurators(allStoryPosts);
+    const curators = helper.getCurators(allStoryPosts,top);
 
     // send response
     res.setHeader('Content-Type', 'application/json');
