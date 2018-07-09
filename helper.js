@@ -101,9 +101,12 @@ module.exports = {
     allStoryPosts.forEach(post => {
       //  Add each curators contributed amounts of every votes.
       if (post.hasOwnProperty('active_votes') && post.active_votes) {
-        let active_votes = JSON.parse(post.active_votes);
-        if (active_votes.hasOwnProperty('rshares') && active_votes.rshares) {
-          curators.push(post);
+        post.active_votes.forEach(vote => {
+          let avote = JSON.parse(vote);
+          if (avote.hasOwnProperty('rshares') && avote.rshares) {
+            let curation = avote.rshares * steem_reward_balance / steem_recent_claims;
+            curators.push(avote.voter, avote.curation);
+          }
         }
       }
     });
