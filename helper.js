@@ -96,12 +96,12 @@ module.exports = {
     });
     return allCommands;
   },
-  getCurators(allStoryPosts, top) {
+  getCurators(allStoryPosts, account, top) {
     let curators = []
     allStoryPosts.forEach(post => {
       if (post.hasOwnProperty('active_votes') && post.active_votes) {
         post.active_votes.forEach(vote => {
-          if (vote.hasOwnProperty('rshares') && vote.rshares) {
+          if (vote.hasOwnProperty('rshares') && vote.rshares && vote.voter !== account) {
             let index = curators.findIndex(curator => curator.voter === vote.voter);
             if (index !== -1) {
               curators[index].rshares += eval(vote.rshares);

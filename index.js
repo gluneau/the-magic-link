@@ -76,7 +76,7 @@ app.get('/curators', async (req, res, next) => {
     next();
   } else {
     const allStoryPosts = await helper.getAllStoryPosts(account);
-    const curators = helper.getCurators(allStoryPosts,top);
+    const curators = helper.getCurators(allStoryPosts, account, top);
 
     // send response
     res.setHeader('Content-Type', 'application/json');
