@@ -99,8 +99,13 @@ module.exports = {
   getCurators(allStoryPosts) {
     let curators = []
     allStoryPosts.forEach(post => {
-      let meta = JSON.parse(post.json_metadata);
       //  Add each curators contributed amounts of every votes.
+      if (post.hasOwnProperty('active_votes') && post.active_votes) {
+        let active_votes = JSON.parse(post.active_votes);
+        if (active_votes.hasOwnProperty('rshares') && active_votes.rshares) {
+          curators.push(post);
+        }
+      }
     });
     return curators.sort((a, b) => {
       if (a.curations > b.curations)
