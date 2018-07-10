@@ -13,7 +13,7 @@ npm i
 The delegators endpoint also needs an API key. It must be set as an env var:
 
 ```
-export DELEGATORS_API_KEY=IdOnThaV4mFkEY
+export DELEGATORS_API_KEY=<yourApiKey>
 ```
 
 ## Endpoints:
