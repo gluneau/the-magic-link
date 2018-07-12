@@ -6,6 +6,7 @@ const fs = require('fs');
 
 const helper = require('./helper');
 
+// Load your certificates here, look at the README.md if you need to create them
 const options = {
   key: fs.readFileSync('cert/key.pem'),
   cert: fs.readFileSync('cert/server.crt')
@@ -224,5 +225,6 @@ app.get('/hasstoryended', async (req, res, next) => {
 
 // Hey! Listen! https://www.youtube.com/watch?v=95mmGO3sleE
 const PORT = process.env.PORT || 3333;
+// Create an HTTPS service
 const server = https.createServer(options, app).listen(PORT);
 console.log("API Listening on " + server.address().address + ":" + server.address().port);

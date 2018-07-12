@@ -96,6 +96,7 @@ module.exports = {
     });
     return allCommands;
   },
+  // get all the curators if not the frog account
   getCurators(allStoryPosts, account, top) {
     let curators = []
     allStoryPosts.forEach(post => {
@@ -112,6 +113,7 @@ module.exports = {
         });
       }
     });
+    // Sorting in order of most curation happends here
     return curators.sort((a, b) => {
       if (a.rshares > b.rshares)
         return -1;
