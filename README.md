@@ -30,7 +30,7 @@ Generating your testing certs if you don't have them.
 
 ```
 openssl req -newkey rsa:2048 -new -nodes -keyout cert/key.pem -out cert/csr.pem
-openssl x509 -req -days 365 -in csr.pem -signkey cert/key.pem -out cert/server.crt
+openssl x509 -req -days 365 -in cert/csr.pem -signkey cert/key.pem -out cert/server.crt
 openssl s_client -showcerts -servername server -connect localhost:443 < /dev/null | sed -n -e '/BEGIN\ CERTIFICATE/,/END\ CERTIFICATE/ p' > cert/cacert.pem
 ```
 
@@ -46,7 +46,7 @@ curl --cacert cert/cacert.pem https://api.the-magic-frog.com/curators\?account\=
 **https://api.the-magic-frog.com**
 - [`/delegators`](https://github.com/mktcode/the-magic-link/blob/master/index.js#L22): Returns all delegators, order by SP.
 - [`/contributors`](https://github.com/mktcode/the-magic-link/blob/master/index.js#L46): Returns all users who have contributed to a story, together with their total number of contributions, ordered by that number.
-- [`/curators`]((https://github.com/mktcode/the-magic-link/blob/master/index.js): Returns all curators, order by rshares
+- [`/curators`](https://github.com/mktcode/the-magic-link/blob/master/index.js): Returns all curators, order by rshares
 - [`/submissions`](https://github.com/mktcode/the-magic-link/blob/master/index.js#L80): Returns all currently voteable submissions, order by votes.
 - [`/stories`](https://github.com/mktcode/the-magic-link/blob/master/index.js#L64): Returns the last post for each story that exists.
 - [`/storyposts`](https://github.com/mktcode/the-magic-link/blob/master/index.js#L96): Returns all posts that belong to a story.
