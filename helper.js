@@ -96,6 +96,32 @@ module.exports = {
     });
     return allCommands;
   },
+  // get all the curators if not the frog account
+  getCurators(allStoryPosts, account, top) {
+    let curators = []
+    allStoryPosts.forEach(post => {
+      if (post.hasOwnProperty('active_votes') && post.active_votes) {
+        post.active_votes.forEach(vote => {
+          if (vote.hasOwnProperty('rshares') && vote.rshares && vote.voter !== account) {
+            let index = curators.findIndex(curator => curator.voter === vote.voter);
+            if (index !== -1) {
+              curators[index].rshares += eval(vote.rshares);
+            } else {
+              curators.push({voter: vote.voter, rshares: eval(vote.rshares)});
+            }
+          }
+        });
+      }
+    });
+    // Sorting in order of most curation happends here
+    return curators.sort((a, b) => {
+      if (a.rshares > b.rshares)
+        return -1;
+      if (a.rshares < b.rshares)
+        return 1;
+      return 0;
+    }).slice(0,eval(top));
+  },
   getContributors(allCommands) {
     let contributors = [];
     allCommands.forEach(command => {

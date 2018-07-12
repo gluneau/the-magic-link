@@ -1,8 +1,16 @@
 const express = require('express');
+const https = require('https');
 const axios = require('axios');
 const cors = require('cors');
+const fs = require('fs');
 
 const helper = require('./helper');
+
+// Load your certificates here, look at the README.md if you need to create them
+const options = {
+  key: fs.readFileSync('cert/key.pem'),
+  cert: fs.readFileSync('cert/server.crt')
+};
 
 const app = express();
 
@@ -57,6 +65,23 @@ app.get('/contributors', async (req, res, next) => {
     // send response
     res.setHeader('Content-Type', 'application/json');
     res.send(contributors);
+  }
+});
+
+// get all contributors for one of the frog accounts
+app.get('/curators', async (req, res, next) => {
+  const account = req.query.account;
+  const top = req.query.top;
+
+  if (accounts.indexOf(account) === -1) {
+    next();
+  } else {
+    const allStoryPosts = await helper.getAllStoryPosts(account);
+    const curators = helper.getCurators(allStoryPosts, account, top);
+
+    // send response
+    res.setHeader('Content-Type', 'application/json');
+    res.send(curators);
   }
 });
 
@@ -200,6 +225,6 @@ app.get('/hasstoryended', async (req, res, next) => {
 
 // Hey! Listen! https://www.youtube.com/watch?v=95mmGO3sleE
 const PORT = process.env.PORT || 3333;
-app.listen(PORT, () => {
-  console.log('API listening on port ' + PORT + '!');
-});
+// Create an HTTPS service
+const server = https.createServer(options, app).listen(PORT);
+console.log("API Listening on " + server.address().address + ":" + server.address().port);
