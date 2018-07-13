@@ -105,9 +105,9 @@ module.exports = {
           if (vote.hasOwnProperty('rshares') && vote.rshares && vote.voter !== account) {
             let index = curators.findIndex(curator => curator.voter === vote.voter);
             if (index !== -1) {
-              curators[index].rshares += eval(vote.rshares);
+              curators[index].rshares += parseInt(vote.rshares);
             } else {
-              curators.push({voter: vote.voter, rshares: eval(vote.rshares)});
+              curators.push({voter: vote.voter, rshares: parseInt(vote.rshares)});
             }
           }
         });
@@ -120,7 +120,7 @@ module.exports = {
       if (a.rshares < b.rshares)
         return 1;
       return 0;
-    }).slice(0,eval(top));
+    }).slice(0, parseInt(top));
   },
   getContributors(allCommands) {
     let contributors = [];
