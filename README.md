@@ -10,11 +10,11 @@ cd the-magic-link
 npm i
 ```
 
-The delegators endpoint also needs an API key. It must be set as an env var:
+The delegators endpoint also needs an API key. It must be set as an env var in .env:
 
 ```
-export PORT=443
-export DELEGATORS_API_KEY=<yourApiKey>
+PORT=443
+DELEGATORS_API_KEY=<yourApiKey>
 ```
 
 And to run:
