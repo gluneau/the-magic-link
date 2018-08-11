@@ -235,6 +235,13 @@ app.get('/hasstoryended', async (req, res, next) => {
 
 // Hey! Listen! https://www.youtube.com/watch?v=95mmGO3sleE
 const PORT = process.env.PORT || 3333;
-// Create an HTTPS service
-const server = https.createServer(options, app).listen(PORT);
-console.log("API Listening on " + server.address().address + ":" + server.address().port);
+if (process.env.BOT_PROD) {
+  app.listen(PORT, () => {
+    console.log('API listening on port ' + PORT + '!');
+  });
+} else {
+  // Create an HTTPS service
+  const server = https.createServer(options, app).listen(PORT);
+  console.log("API Listening on " + server.address().address + ":" + server.address().port);
+}
+
