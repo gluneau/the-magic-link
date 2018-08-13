@@ -25,6 +25,10 @@ sudo su
 node index.js
 ```
 
+## Developing
+
+You can lint the code by running `npm run lint`
+
 ## Testing 
 
 Generating your testing certs if you don't have them.
