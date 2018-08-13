@@ -10,7 +10,7 @@ const helper = require('./helper');
 // Load your certificates here, look at the README.md if you need to create them
 const options = {
   key: fs.readFileSync('cert/key.pem'),
-  cert: fs.readFileSync('cert/server.crt')
+  cert: fs.readFileSync('cert/server.crt'),
 };
 
 const app = express();
@@ -29,17 +29,15 @@ app.use(cors());
 
 // get delegators for one of the frog accounts
 app.get('/delegators', (req, res, next) => {
-  const account = req.query.account;
+  const { account } = req.query;
 
   if (accounts.indexOf(account) === -1) {
     next();
   } else {
-    axios.get('https://uploadbeta.com/api/steemit/delegators/?cached&hash=' + process.env.DELEGATORS_API_KEY + '&id=' + account).then((result) => {
-      let delegators = result.data;
+    axios.get(`https://uploadbeta.com/api/steemit/delegators/?cached&hash=${process.env.DELEGATORS_API_KEY}&id=${account}`).then((result) => {
+      const delegators = result.data;
       // sort by SP
-      delegators.sort((a, b) => {
-        return a.sp < b.sp;
-      });
+      delegators.sort((a, b) => a.sp < b.sp);
 
       // send response
       res.setHeader('Content-Type', 'application/json');
@@ -53,7 +51,7 @@ app.get('/delegators', (req, res, next) => {
 
 // get all contributors for one of the frog accounts
 app.get('/contributors', async (req, res, next) => {
-  const account = req.query.account;
+  const { account } = req.query;
 
   if (accounts.indexOf(account) === -1) {
     next();
@@ -71,15 +69,15 @@ app.get('/contributors', async (req, res, next) => {
 
 // get all contributors for one of the frog accounts
 app.get('/curators', async (req, res, next) => {
-  const account = req.query.account;
-  const top = parseInt(req.query.top);
-  const storyNumber = parseInt(req.query.storyNumber);
+  const { account } = req.query;
+  const top = parseInt(req.query.top, 10);
+  const storyNumber = parseInt(req.query.storyNumber, 10);
 
   if (accounts.indexOf(account) === -1) {
     next();
   } else {
     const allStoryPosts = await helper.getAllStoryPosts(account);
-    const StoryPosts = await helper.getStoryPosts(allStoryPosts, storyNumber)
+    const StoryPosts = await helper.getStoryPosts(allStoryPosts, storyNumber);
 
     if (storyNumber > 0) {
       const curators = helper.getCurators(StoryPosts, account, top);
@@ -97,7 +95,7 @@ app.get('/curators', async (req, res, next) => {
 
 // get all stories (the last post of each story)
 app.get('/stories', async (req, res, next) => {
-  const account = req.query.account;
+  const { account } = req.query;
 
   if (accounts.indexOf(account) === -1) {
     next();
@@ -113,7 +111,7 @@ app.get('/stories', async (req, res, next) => {
 
 // get all commands from current story post
 app.get('/submissions', async (req, res, next) => {
-  const account = req.query.account;
+  const { account } = req.query;
 
   if (accounts.indexOf(account) === -1) {
     next();
@@ -129,8 +127,8 @@ app.get('/submissions', async (req, res, next) => {
 
 // get all story posts
 app.get('/storyposts', async (req, res, next) => {
-  const account = req.query.account;
-  let storyNumber = parseInt(req.query.storyNumber);
+  const { account } = req.query;
+  const storyNumber = parseInt(req.query.storyNumber, 10);
 
   if (accounts.indexOf(account) === -1) {
     next();
@@ -154,7 +152,7 @@ app.get('/storyposts', async (req, res, next) => {
 
 // get account data
 app.get('/account', async (req, res, next) => {
-  const account = req.query.account;
+  const { account } = req.query;
 
   if (accounts.indexOf(account) === -1) {
     next();
@@ -169,8 +167,8 @@ app.get('/account', async (req, res, next) => {
 
 // get pot size
 app.get('/pot', async (req, res, next) => {
-  const account = req.query.account;
-  let storyNumber = parseInt(req.query.storyNumber);
+  const { account } = req.query;
+  let storyNumber = parseInt(req.query.storyNumber, 10);
 
   if (accounts.indexOf(account) === -1) {
     next();
@@ -192,7 +190,7 @@ app.get('/pot', async (req, res, next) => {
 
 // get latest story post
 app.get('/lateststorypost', async (req, res, next) => {
-  const account = req.query.account;
+  const { account } = req.query;
 
   if (accounts.indexOf(account) === -1) {
     next();
@@ -211,7 +209,7 @@ app.get('/lateststorypost', async (req, res, next) => {
 
 // has latest story ended
 app.get('/hasstoryended', async (req, res, next) => {
-  const account = req.query.account;
+  const { account } = req.query;
 
   if (accounts.indexOf(account) === -1) {
     next();
@@ -220,7 +218,7 @@ app.get('/hasstoryended', async (req, res, next) => {
 
     if (allStoryPosts.length) {
       const meta = JSON.parse(allStoryPosts[allStoryPosts.length - 1].json_metadata);
-      if (meta.hasOwnProperty('commands') && meta.commands.length) {
+      if (Object.prototype.hasOwnProperty.call(meta, 'commands') && meta.commands.length) {
         // send response
         res.setHeader('Content-Type', 'application/json');
         res.send(meta.commands[meta.commands.length - 1].type === 'end');
@@ -235,13 +233,12 @@ app.get('/hasstoryended', async (req, res, next) => {
 
 // Hey! Listen! https://www.youtube.com/watch?v=95mmGO3sleE
 const PORT = process.env.PORT || 3333;
-if (process.env.BOT_PROD) {
+if (process.env.BOT_PROD === 'true') {
   app.listen(PORT, () => {
-    console.log('API listening on port ' + PORT + '!');
+    console.log(`API listening on port ${PORT}!`);
   });
 } else {
   // Create an HTTPS service
   const server = https.createServer(options, app).listen(PORT);
-  console.log("API Listening on " + server.address().address + ":" + server.address().port);
+  console.log(`API Listening on ${server.address().address}:${server.address().port}`);
 }
-
