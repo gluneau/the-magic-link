@@ -166,9 +166,10 @@ module.exports = {
 
     return {
       total: pot,
-      delegators: pot * 0.2,
-      winner: pot * 0.4,
-      others: pot * 0.4
+      delegators: pot * 0.25,
+      curators: pot * 0.25,
+      winner: pot * 0.25,
+      others: pot * 0.25
     }
   }
 };
