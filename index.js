@@ -227,7 +227,7 @@ app.get('/hasstoryended', async (req, res, next) => {
 
 // Hey! Listen! https://www.youtube.com/watch?v=95mmGO3sleE
 const PORT = process.env.PORT || 3333;
-if (process.env.BOT_PROD === 'true') {
+if (process.env.API_PROD === 'true') {
   app.listen(PORT, () => {
     console.log(`API listening on port ${PORT}!`);
   });
