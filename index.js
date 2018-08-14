@@ -16,7 +16,7 @@ if (!process.env.DELEGATORS_API_KEY) {
 }
 
 // all the frog accounts
-const accounts = ['the-magic-frog', 'der-zauberfrosch', 'grenouille', 'analyzer'];
+const accounts = ['the-magic-frog', 'der-zauberfrosch', 'grenouille', 'sapo-magico', 'analyzer'];
 
 // allow cross origin resource sharing
 app.use(cors());
@@ -237,7 +237,7 @@ if (process.env.API_PROD === 'true') {
     key: fs.readFileSync('cert/key.pem'),
     cert: fs.readFileSync('cert/server.crt'),
   };
-  
+
   // Create an HTTPS service
   const server = https.createServer(options, app).listen(PORT);
   console.log(`API Listening on ${server.address().address}:${server.address().port}`);
