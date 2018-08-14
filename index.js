@@ -7,12 +7,6 @@ const fs = require('fs');
 
 const helper = require('./helper');
 
-// Load your certificates here, look at the README.md if you need to create them
-const options = {
-  key: fs.readFileSync('cert/key.pem'),
-  cert: fs.readFileSync('cert/server.crt'),
-};
-
 const app = express();
 
 // key for delegator API at https://uploadbeta.com/api/steemit/delegators must be set
@@ -238,6 +232,12 @@ if (process.env.BOT_PROD === 'true') {
     console.log(`API listening on port ${PORT}!`);
   });
 } else {
+  // Load your certificates here, look at the README.md if you need to create them
+  const options = {
+    key: fs.readFileSync('cert/key.pem'),
+    cert: fs.readFileSync('cert/server.crt'),
+  };
+  
   // Create an HTTPS service
   const server = https.createServer(options, app).listen(PORT);
   console.log(`API Listening on ${server.address().address}:${server.address().port}`);
