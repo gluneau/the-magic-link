@@ -162,19 +162,11 @@ app.get('/account', async (req, res, next) => {
 // get pot size
 app.get('/pot', async (req, res, next) => {
   const { account } = req.query;
-  let storyNumber = parseInt(req.query.storyNumber, 10);
 
   if (accounts.indexOf(account) === -1) {
     next();
   } else {
-    const allStoryPosts = await helper.getAllStoryPosts(account);
-    const stories = helper.getStories(allStoryPosts);
-
-    // validate storyNumber, fallback to latest
-    storyNumber = storyNumber && storyNumber <= stories.length ? storyNumber : stories.length;
-
-    const storyPosts = helper.getStoryPosts(allStoryPosts, storyNumber);
-    const pot = helper.getPot(storyPosts);
+    const pot = await helper.getPot(account);
 
     // send response
     res.setHeader('Content-Type', 'application/json');

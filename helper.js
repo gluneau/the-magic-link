@@ -146,25 +146,22 @@ module.exports = {
       });
     });
   },
-  getPot(storyPosts) {
-    let pot = 0;
-    for (let i = 0; i < storyPosts.length; i += 1) {
-      const post = storyPosts[i];
-      if (post.last_payout === '1970-01-01T00:00:00') {
-        pot += parseFloat(post.pending_payout_value.replace(' SBD', '')) * 0.75 / 2;
-      } else {
-        pot += (parseFloat(post.total_payout_value.replace(' SBD', '')) / 2);
-      }
-    }
-
-    pot *= 0.95; // 5 % goes to beneficiaries
-
-    return {
-      total: pot,
-      delegators: pot * 0.25,
-      curators: pot * 0.25,
-      winner: pot * 0.25,
-      others: pot * 0.25,
-    };
+  getPot(account) {
+    return new Promise((resolve, reject) => {
+      steem.api.getAccounts([account], (err, users) => {
+        if (err || users.length === 0) {
+          reject(err);
+        } else {
+          const pot = parseFloat(users[0].sbd_balance.replace(' SBD', ''));
+          resolve({
+            total: pot,
+            delegators: pot * 0.25,
+            curators: pot * 0.25,
+            winner: pot * 0.25,
+            others: pot * 0.25,
+          });
+        }
+      });
+    });
   },
 };
