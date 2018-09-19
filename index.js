@@ -9,12 +9,6 @@ const helper = require('./helper');
 
 const app = express();
 
-// key for delegator API at https://uploadbeta.com/api/steemit/delegators must be set
-if (!process.env.DELEGATORS_API_KEY) {
-  console.log('Missing env var: DELEGATORS_API_KEY');
-  process.exit();
-}
-
 // all the frog accounts
 const accounts = ['the-magic-frog', 'der-zauberfrosch', 'grenouille', 'sapo-magico', 'analyzer'];
 
@@ -28,18 +22,50 @@ app.get('/delegators', (req, res, next) => {
   if (accounts.indexOf(account) === -1) {
     next();
   } else {
-    axios.get(`https://uploadbeta.com/api/steemit/delegators/?cached&hash=${process.env.DELEGATORS_API_KEY}&id=${account}`).then((result) => {
-      const delegators = result.data;
-      // sort by SP
-      delegators.sort((a, b) => a.sp < b.sp);
+    let delegators;
+    switch (account) {
+      case 'the-magic-frog':
+        delegators = [
+          {"vests": 608447, "time": "2018-07-18 18:26:36", "sp": 300.9606911356448, "delegator": "lukestokes.mhth"},
+          {"vests": 203005.65, "time" :"2018-06-30 17:47:54", "sp": 100.41420325589708, "delegator": "helo"},
+          {"vests": 202838.82, "time" :"2018-07-16 14:44:51", "sp": 100.3316828850149, "delegator": "mcfarhat"},
+          {"vests": 202211.51, "time" :"2018-09-12 13:28:06", "sp": 100.02139184708341, "delegator": "mkt"}
+        ];
+        break;
+      case 'grenouille':
+        delegators = [
+          {"vests": 1016215.85, "delegator": "helo", "sp": 502.66751182431415, "time": "2018-06-08 12:55:21"},
+          {"vests": 608446.69, "delegator": "lukestokes.mhth", "sp": 300.96596479974187, "time": "2018-07-18 18:40:24"},
+          {"vests": 507592.36, "delegator": "pnc", "sp": 251.0787335409416, "time": "2018-06-27 20:21:45"},
+          {"vests": 50762.65, "delegator": "orlandumike", "sp": 25.10956207690376, "time": "2018-06-26 13:54:33"},
+          {"vests": 30485.05, "delegator": "zonguin", "sp": 15.079320236286225, "time": "2018-06-09 10:34:15"},
+          {"vests": 20500, "delegator": "mkt", "sp": 10.140251199977289, "time": "2018-06-28 11:58:21"},
+          {"vests": 2029.65, "delegator": "dragibusss", "sp": 1.0039590657577513, "time": "2018-07-04 20:41:45"}
+        ];
+        break;
+      case 'der-zauberfrosch':
+        delegators = [
+          {"time": "2018-07-13 22:41:15", "vests": 101500, "sp": 50.20547790339829, "delegator": "mkt"}
+        ];
+        break;
+      case 'sapo-magico':
+        delegators = [
+          {"delegator": "leodelara", "time": "2018-09-03 23:51:06", "sp": 110.07606242679346, "vests": 222534.85},
+          {"delegator": "helo", "time": "2018-08-21 13:04:15", "sp": 100.14152477164771, "vests": 202450.73},
+          {"delegator": "raycoms", "time": "2018-08-21 15:43:48", "sp": 100.1409015171837, "vests": 202449.47},
+          {"delegator": "mrprofessor", "time": "2018-08-23 13:10:24", "sp": 50.06535837390386, "vests": 101214.44},
+          {"delegator": "juniorfrederico", "time": "2018-08-21 15:21:03", "sp": 20.02819811070714, "vests": 40489.93},
+          {"delegator": "casagrande", "time": "2018-08-23 11:54:33", "sp": 20.026189846323145, "vests": 40485.87}
+        ];
+        break;
+    }
 
-      // send response
-      res.setHeader('Content-Type', 'application/json');
-      res.send(delegators);
-    }).catch((err) => {
-      console.error(err);
-      next();
-    });
+    // sort by SP
+    delegators.sort((a, b) => a.sp < b.sp);
+
+    // send response
+    res.setHeader('Content-Type', 'application/json');
+    res.send(delegators);
   }
 });
 
