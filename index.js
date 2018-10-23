@@ -34,13 +34,13 @@ app.get('/delegators', (req, res, next) => {
         break;
       case 'grenouille':
         delegators = [
-          {"vests": 1016215.85, "delegator": "helo", "sp": 502.66751182431415, "time": "2018-06-08 12:55:21"},
-          {"vests": 608446.69, "delegator": "lukestokes.mhth", "sp": 300.96596479974187, "time": "2018-07-18 18:40:24"},
-          {"vests": 507592.36, "delegator": "pnc", "sp": 251.0787335409416, "time": "2018-06-27 20:21:45"},
-          {"vests": 50762.65, "delegator": "orlandumike", "sp": 25.10956207690376, "time": "2018-06-26 13:54:33"},
-          {"vests": 30485.05, "delegator": "zonguin", "sp": 15.079320236286225, "time": "2018-06-09 10:34:15"},
-          {"vests": 20500, "delegator": "mkt", "sp": 10.140251199977289, "time": "2018-06-28 11:58:21"},
-          {"vests": 2029.65, "delegator": "dragibusss", "sp": 1.0039590657577513, "time": "2018-07-04 20:41:45"}
+          {"vests": 2017792.85, "delegator": "helo", "sp": 1000.00, "time": "2018-10-22 20:05:06"},
+          {"vests": 608446.69, "delegator": "lukestokes.mhth", "sp": 301.54, "time": "2018-07-18 18:40:24"},
+          {"vests": 507592.36, "delegator": "pnc", "sp": 251.56, "time": "2018-06-27 20:21:45"},
+          {"vests": 50762.65, "delegator": "orlandumike", "sp": 25.16, "time": "2018-06-26 13:54:33"},
+          {"vests": 30485.05, "delegator": "zonguin", "sp": 15.11, "time": "2018-06-09 10:34:15"},
+          {"vests": 20500, "delegator": "mkt", "sp": 10.16, "time": "2018-06-28 11:58:21"},
+          {"vests": 2029.65, "delegator": "dragibusss", "sp": 1.01, "time": "2018-07-04 20:41:45"}
         ];
         break;
       case 'der-zauberfrosch':
@@ -50,12 +50,11 @@ app.get('/delegators', (req, res, next) => {
         break;
       case 'sapo-magico':
         delegators = [
-          {"delegator": "leodelara", "time": "2018-09-03 23:51:06", "sp": 110.07606242679346, "vests": 222534.85},
+          {"delegator": "leodelara", "time": "2018-10-17 02:02:00", "sp": 50.02, "vests": 100920.91},
           {"delegator": "helo", "time": "2018-08-21 13:04:15", "sp": 100.14152477164771, "vests": 202450.73},
           {"delegator": "raycoms", "time": "2018-08-21 15:43:48", "sp": 100.1409015171837, "vests": 202449.47},
           {"delegator": "mrprofessor", "time": "2018-08-23 13:10:24", "sp": 50.06535837390386, "vests": 101214.44},
-          {"delegator": "juniorfrederico", "time": "2018-08-21 15:21:03", "sp": 20.02819811070714, "vests": 40489.93},
-          {"delegator": "casagrande", "time": "2018-08-23 11:54:33", "sp": 20.026189846323145, "vests": 40485.87}
+          {"delegator": "juniorfrederico", "time": "2018-08-21 15:21:03", "sp": 20.02819811070714, "vests": 40489.93}
         ];
         break;
     }
