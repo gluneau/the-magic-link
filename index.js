@@ -26,19 +26,18 @@ app.get('/delegators', (req, res, next) => {
     switch (account) {
       case 'the-magic-frog':
         delegators = [
-          {"vests": 608447, "time": "2018-07-18 18:26:36", "sp": 300.9606911356448, "delegator": "lukestokes.mhth"},
-          {"vests": 203005.65, "time" :"2018-06-30 17:47:54", "sp": 100.41420325589708, "delegator": "helo"},
-          {"vests": 202838.82, "time" :"2018-07-16 14:44:51", "sp": 100.3316828850149, "delegator": "mcfarhat"},
-          {"vests": 202211.51, "time" :"2018-09-12 13:28:06", "sp": 100.02139184708341, "delegator": "mkt"}
+          {"vests": 608447, "time": "2018-07-18 18:26:36", "sp": 302.31, "delegator": "lukestokes.mhth"},
+          {"vests": 203005.65, "time" :"2018-06-30 17:47:54", "sp": 100.87, "delegator": "helo"},
+          {"vests": 202211.51, "time" :"2018-09-12 13:28:06", "sp": 100.47, "delegator": "mkt"}
         ];
         break;
       case 'grenouille':
         delegators = [
-          {"vests": 2017792.85, "delegator": "helo", "sp": 1000.00, "time": "2018-10-22 20:05:06"},
+          {"vests": 2017792.85, "delegator": "helo", "sp": 1002.56, "time": "2018-12-08 20:05:06"},
           {"vests": 608446.69, "delegator": "lukestokes.mhth", "sp": 301.54, "time": "2018-07-18 18:40:24"},
           {"vests": 507592.36, "delegator": "pnc", "sp": 251.56, "time": "2018-06-27 20:21:45"},
           {"vests": 50762.65, "delegator": "orlandumike", "sp": 25.16, "time": "2018-06-26 13:54:33"},
-          {"vests": 30485.05, "delegator": "zonguin", "sp": 15.11, "time": "2018-06-09 10:34:15"},
+          {"vests": 40284.75, "delegator": "zonguin", "sp": 20.02, "time": "2018-12-08 10:34:15"},
           {"vests": 20500, "delegator": "mkt", "sp": 10.16, "time": "2018-06-28 11:58:21"},
           {"vests": 2029.65, "delegator": "dragibusss", "sp": 1.01, "time": "2018-07-04 20:41:45"}
         ];
