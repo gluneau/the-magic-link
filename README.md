@@ -7,7 +7,7 @@ This is the API for [The Magic Frog](https://github.com/mktcode/the-magic-frog) 
 ```
 git clone https://github.com/mktcode/the-magic-link.git
 cd the-magic-link
-npm i
+yarn
 ```
 
 The delegators endpoint also needs an API key. It must be set as an env var in .env:
@@ -22,12 +22,12 @@ And to run:
 
 ```
 sudo su
-node index.js
+yarn start
 ```
 
 ## Developing
 
-You can lint the code by running `npm run lint`
+You can lint the code by running `yarn lint`
 
 ## Testing 
 
