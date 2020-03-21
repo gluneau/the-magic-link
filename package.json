@@ -1,13 +1,13 @@
 {
   "name": "the-magic-link",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "API for the Magic Frog and his Magic Story Machine",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/.bin/eslint --fix ."
   },
-  "author": "",
+  "author": "mkt <kontakt@markus-kottlaender.de>",
   "license": "GPL-3.0",
   "repository": "https://github.com/mktcode/the-magic-link",
   "dependencies": {
@@ -15,7 +15,7 @@
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
-    "steem": "^0.7.1"
+    "steem-js-patched": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1",

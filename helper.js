@@ -1,10 +1,10 @@
-const steem = require('steem');
+const hive = require('steem-js-patched');
 
 module.exports = {
   // helper for recursive post fetching
   getPosts(account, startAuthor, startPermlink) {
     return new Promise((resolve, reject) => {
-      steem.api.getDiscussionsByBlog({
+      hive.api.getDiscussionsByBlog({
         tag: account,
         limit: 100,
         start_author: startAuthor,
@@ -56,7 +56,7 @@ module.exports = {
   getSubmissions(storyPost) {
     if (storyPost) {
       return new Promise((resolve, reject) => {
-        steem.api.getContentReplies(storyPost.author, storyPost.permlink, (err, comments) => {
+        hive.api.getContentReplies(storyPost.author, storyPost.permlink, (err, comments) => {
           if (err) {
             reject(err);
           } else {
@@ -137,7 +137,7 @@ module.exports = {
   },
   getAccount(account) {
     return new Promise((resolve, reject) => {
-      steem.api.getAccounts([account], (err, users) => {
+      hive.api.getAccounts([account], (err, users) => {
         if (err || users.length === 0) {
           reject(err);
         } else {
@@ -148,11 +148,11 @@ module.exports = {
   },
   getPot(account) {
     return new Promise((resolve, reject) => {
-      steem.api.getAccounts([account], (err, users) => {
+      hive.api.getAccounts([account], (err, users) => {
         if (err || users.length === 0) {
           reject(err);
         } else {
-          const pot = parseFloat(users[0].sbd_balance.replace(' SBD', ''));
+          const pot = parseFloat(users[0].sbd_balance.replace(' HBD', ''));
           resolve({
             total: pot,
             delegators: pot * 0.25,
